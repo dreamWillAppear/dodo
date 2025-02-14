@@ -17,6 +17,7 @@ final class MenuScreenVC: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.registerCell(ProductCell.self)
+        
         return tableView
     } ()
     
@@ -30,8 +31,6 @@ final class MenuScreenVC: UIViewController {
         setupConstraints()
         fetchProducts()
     }
-    
-    // MARK: - Private Methods
     
 }
 
@@ -61,7 +60,7 @@ extension MenuScreenVC: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueCell(indexPath) as ProductCell
-        cell.configureCell(product: products[indexPath.row])
+        cell.update(product: products[indexPath.row])
         
         return cell
     }
@@ -78,19 +77,6 @@ extension MenuScreenVC {
     
 }
 
-
-// MARK: - IB Outlets
-
-// MARK: - Public Properties
-
-// MARK: - Private Properties
-
-// MARK: - Initializers
-
-// MARK: - Overrides Methods
-
-// MARK: - IB Actions
-
-// MARK: - Public Methods
-
-// MARK: - Private Methods
+#Preview {
+    MenuScreenVC()
+}

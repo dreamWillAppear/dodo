@@ -120,7 +120,7 @@ extension ProductCell {
 
 extension ProductCell {
     
-    func configureCell(product: Product) {
+    func update(product: Product) {
         productImageView.image = UIImage(named: product.image)
         nameLabel.text = product.name
         detailLabel.text = product.detail
