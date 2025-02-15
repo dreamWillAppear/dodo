@@ -18,7 +18,7 @@ final class StoriesTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(_ stories: [UIImage]) {
+    func update(_ stories: [Story]) {
         collectionView.update(stories: stories)
     }
     
@@ -31,8 +31,9 @@ extension StoriesTableViewCell {
     
     private func setupConstraints() {
         collectionView.snp.makeConstraints { make in
-            make.edges.equalTo(contentView)
-            make.height.equalTo(140)
+            make.top.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview().inset(16)
+            make.height.equalTo(110)
         }
     }
 }

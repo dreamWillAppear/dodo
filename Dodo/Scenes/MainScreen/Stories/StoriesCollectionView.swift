@@ -3,45 +3,30 @@ import SnapKit
 
 final class StoriesCollectionView: UICollectionView {
     
-    private var stories: [UIImage] = []
-    
-//    static var layout: UICollectionViewFlowLayout = {
-//        let layout = UICollectionViewFlowLayout()
-//        layout.scrollDirection = .horizontal
-//        layout.itemSize = CGSize(width: 100, height: 150)
-//        
-//        return layout
-//    }()
+    private var stories: [Story] = []
     
     init() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 100, height: 150)
-            
+        layout.minimumLineSpacing = 10
+        layout.itemSize = CGSize(width: 85, height: 110)
         super.init(frame: .zero, collectionViewLayout: layout)
         
         commonInit()
     }
-    
-//    override init(frame: CGRect, collectionViewLayout layout: UICollectionViewLayout) {
-//        super.init(frame: frame, collectionViewLayout: layout)
-//        
-//        commonInit()
-//    }
-    
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     func commonInit() {
-        self.dataSource = self
-        self.delegate = self
-        self.register(StoriesCollectionViewCell.self, forCellWithReuseIdentifier: StoriesCollectionViewCell.reuseId)
-        self.showsHorizontalScrollIndicator = false
+        dataSource = self
+        delegate = self
+        register(StoriesCollectionViewCell.self, forCellWithReuseIdentifier: StoriesCollectionViewCell.reuseId)
+        showsHorizontalScrollIndicator = false
     }
     
-    func update(stories: [UIImage]) {
+    func update(stories: [Story]) {
         self.stories = stories
     }
     
@@ -63,3 +48,6 @@ extension StoriesCollectionView: UICollectionViewDataSource, UICollectionViewDel
     }
 }
 
+#Preview {
+    CatalogViewController()
+}

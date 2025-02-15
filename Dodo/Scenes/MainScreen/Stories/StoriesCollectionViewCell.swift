@@ -8,8 +8,10 @@ final class StoriesCollectionViewCell: UICollectionViewCell {
     private lazy var photoImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
+        imageView.layer.cornerRadius = 20
         imageView.clipsToBounds = true
-        imageView.image = UIImage(named: ImageName.defaultPizza)
+        imageView.backgroundColor = .orange
+        imageView.image = UIImage(named: PizzaImageName.defaultPizza)
         return imageView
     }()
     
@@ -24,8 +26,8 @@ final class StoriesCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(story: UIImage) {
-        photoImageView.image = story
+    func update(story: Story) {
+        photoImageView.image = story.image
     }
     
 }
@@ -37,9 +39,11 @@ extension StoriesCollectionViewCell {
     
     private func setupConstraints() {
         photoImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(100)
-            make.center.equalToSuperview()
+            make.height.width.equalToSuperview()
         }
     }
 }
 
+#Preview {
+    CatalogViewController()
+}
