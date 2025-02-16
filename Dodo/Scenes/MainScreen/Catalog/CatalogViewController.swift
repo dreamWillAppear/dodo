@@ -20,7 +20,8 @@ final class CatalogViewController: UIViewController {
         tableView.delegate = self
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
-        tableView.register(StoriesTableViewCell.self, forCellReuseIdentifier: StoriesTableViewCell.reuseId)
+        tableView.register(SectionLabelTableViewCell.self, forCellReuseIdentifier: SectionLabelTableViewCell.reuseID)
+        tableView.register(StoriesTableViewCell.self, forCellReuseIdentifier: StoriesTableViewCell.reuseID)
         tableView.register(ProductTableViewCell.self, forCellReuseIdentifier: ProductTableViewCell.reuseID)
         tableView.register(CategoryHeaderView.self, forHeaderFooterViewReuseIdentifier: CategoryHeaderView.reuseID)
         tableView.separatorStyle = .none
@@ -115,7 +116,7 @@ extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
         
         switch catalogSection {
         case .products:
-            return 44
+            return 80
         default:
             return CGFloat.leastNormalMagnitude
         }
@@ -137,18 +138,15 @@ extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
 //MARK: - Configure Cell For Section
 
 extension CatalogViewController {
+
     func configureStoriesCell(indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: StoriesTableViewCell.reuseId, for: indexPath) as! StoriesTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: StoriesTableViewCell.reuseID, for: indexPath) as! StoriesTableViewCell
         
         cell.update(stories)
         
         return cell
     }
-    
-    func configureCategoriesHeader() {
         
-    }
-    
     func configureMenuCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ProductTableViewCell.reuseID, for: indexPath) as! ProductTableViewCell
         
@@ -156,10 +154,7 @@ extension CatalogViewController {
         
         return cell
     }
-}
-
-#Preview {
-    CatalogViewController()
+    
 }
 
 //MARK: - Networking
@@ -179,4 +174,8 @@ extension CatalogViewController {
         stories = storiesService.fetchStories()
         tableView.reloadData()
     }
+}
+
+#Preview {
+    CatalogViewController()
 }

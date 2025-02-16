@@ -1,7 +1,13 @@
 import UIKit
 import SnapKit
 
+protocol CategoriesCollectionViewDelegate: AnyObject {
+    func didChangeCategory(_ categoryName: String)
+}
+
 final class CategoriesCollectionView: UICollectionView {
+    
+    weak var delgate: CategoriesCollectionViewDelegate?
     
     static let reuseId = "CategoriesCollectionView"
     
@@ -36,6 +42,8 @@ final class CategoriesCollectionView: UICollectionView {
     
 }
 
+//MARK: -  UICollectionViewDelegate, UICollectionViewDataSource
+
 extension CategoriesCollectionView: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -46,9 +54,19 @@ extension CategoriesCollectionView: UICollectionViewDelegate, UICollectionViewDa
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoriesCollectionViewCell.reuseID, for: indexPath) as! CategoriesCollectionViewCell
         
         cell.update(categoryName: categories[indexPath.row])
+        cell.delegate = self
         
         return cell
     }
+}
+
+//MARK: - CategoriesCollectionViewCellDelegate
+
+extension CategoriesCollectionView: CategoriesCollectionViewCellDelegate {
+    func didChangeCategory(_ categoryName: String) {
+        delgate?.didChangeCategory(categoryName)
+    }
+    
 }
 
 #Preview {

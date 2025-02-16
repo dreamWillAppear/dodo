@@ -3,8 +3,6 @@ import SnapKit
 
 final class StoriesTableViewCell: UITableViewCell {
     
-    static let reuseId = "StoriesTableViewCell"
-    
     private let collectionView = StoriesCollectionView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

@@ -1,7 +1,13 @@
 import UIKit
 import SnapKit
 
+protocol CategoriesCollectionViewCellDelegate: AnyObject {
+    func didChangeCategory(_ categoryName: String)
+}
+
 final class CategoriesCollectionViewCell: UICollectionViewCell {
+    
+    weak var delegate: CategoriesCollectionViewCellDelegate?
     
     private lazy var isActive = false {
         didSet {
@@ -57,6 +63,7 @@ final class CategoriesCollectionViewCell: UICollectionViewCell {
     
     @objc private func didTapCategoryButton() {
         isActive.toggle()
+        delegate?.didChangeCategory(categoryButton.titleLabel?.text ?? "")
     }
     
 }
