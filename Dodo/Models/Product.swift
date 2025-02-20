@@ -1,6 +1,6 @@
 struct Product {
     var name: String
-    var detail: String
+    var details: String
     var price: Int
     var image: String
 }

@@ -3,6 +3,8 @@ import SnapKit
 
 private enum CatalogSection: Int, CaseIterable {
     case stories
+    case bannersLabel
+    case banners
     case products
 }
 
@@ -10,10 +12,12 @@ final class CatalogViewController: UIViewController {
     
     private let productService = ProductService.shared
     private let storiesService = StoriesService.shared
+    private let bannersService = BannersService.shared
     
     private var stories: [Story] = []
     private var categories: [String] = []
     private var products: [Product] = []
+    private var banners: [Banner] = []
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -21,6 +25,7 @@ final class CatalogViewController: UIViewController {
         tableView.dataSource = self
         tableView.showsVerticalScrollIndicator = false
         tableView.register(SectionLabelTableViewCell.self, forCellReuseIdentifier: SectionLabelTableViewCell.reuseID)
+        tableView.register(BannersTableVeiwCell.self, forCellReuseIdentifier: BannersTableVeiwCell.reuseID)
         tableView.register(StoriesTableViewCell.self, forCellReuseIdentifier: StoriesTableViewCell.reuseID)
         tableView.register(ProductTableViewCell.self, forCellReuseIdentifier: ProductTableViewCell.reuseID)
         tableView.register(CategoryHeaderView.self, forHeaderFooterViewReuseIdentifier: CategoryHeaderView.reuseID)
@@ -34,6 +39,7 @@ final class CatalogViewController: UIViewController {
         setupViews()
         setupConstraints()
         fetchStories()
+        fetchBanners()
         fetchCategories()
         fetchProducts()
     }
@@ -70,6 +76,10 @@ extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
         switch catalogSection {
         case .stories:
             return 1
+        case .bannersLabel:
+            return 1
+        case .banners:
+            return 1
         case .products:
             return products.count
         default:
@@ -84,6 +94,10 @@ extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
         switch catalogSection {
         case .stories:
             return configureStoriesCell(indexPath: indexPath)
+        case .bannersLabel:
+            return configureBannersLabelCell(indexPath: indexPath)
+        case .banners:
+            return configureBannersCell(indexPath: indexPath)
         case .products:
             return configureMenuCell(indexPath: indexPath)
         default:
@@ -101,8 +115,6 @@ extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
         header.updateCategories(categories)
         
         switch catalogSection {
-        case .stories:
-            return nil
         case .products:
             return header
         default:
@@ -118,31 +130,35 @@ extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
         case .products:
             return 80
         default:
-            return CGFloat.leastNormalMagnitude
+            return 0.1
         }
     }
     
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        let catalogSection = CatalogSection(rawValue: section)
-        
-        switch catalogSection {
-        case .stories:
-            return CGFloat.leastNormalMagnitude
-        default:
-            return 0
-        }
-    }
-
 }
 
 //MARK: - Configure Cell For Section
 
 extension CatalogViewController {
-
     func configureStoriesCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: StoriesTableViewCell.reuseID, for: indexPath) as! StoriesTableViewCell
         
         cell.update(stories)
+        
+        return cell
+    }
+    
+    func configureBannersLabelCell(indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: SectionLabelTableViewCell.reuseID, for: indexPath) as! SectionLabelTableViewCell
+        
+        cell.update("Часто заказывают")
+        
+        return cell
+    }
+    
+    func configureBannersCell(indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: BannersTableVeiwCell.reuseID, for: indexPath) as! BannersTableVeiwCell
+        
+        cell.update(banners)
         
         return cell
     }
@@ -154,12 +170,16 @@ extension CatalogViewController {
         
         return cell
     }
-    
 }
 
 //MARK: - Networking
 
 extension CatalogViewController {
+    private func fetchBanners() {
+        banners = bannersService.fetchBanners()
+        tableView.reloadData()
+    }
+    
     private func fetchProducts() {
         products = productService.fetchProducts()
         tableView.reloadData()
