@@ -7,10 +7,11 @@ final class ProductService {
     private let categories: [String] = [
         "Новинки",
         "Пиццы",
-        "Комбо",
+        "КомбоКомбо",
         "Закуски",
         "Завтраки",
-        "Напитки"
+        "Напитки",
+        "Завтраки"
     ]
     
     private let products: [Product] = [

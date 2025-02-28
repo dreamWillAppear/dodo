@@ -29,6 +29,7 @@ final class CatalogViewController: UIViewController {
         tableView.register(StoriesTableViewCell.self, forCellReuseIdentifier: StoriesTableViewCell.reuseID)
         tableView.register(ProductTableViewCell.self, forCellReuseIdentifier: ProductTableViewCell.reuseID)
         tableView.register(CategoryHeaderView.self, forHeaderFooterViewReuseIdentifier: CategoryHeaderView.reuseID)
+        tableView.sectionHeaderTopPadding = 0
         tableView.separatorStyle = .none
         return tableView
     }()
@@ -65,9 +66,13 @@ extension CatalogViewController {
 
 extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
     
+    // MARK: - numberOfSections
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         CatalogSection.allCases.count
     }
+    
+    // MARK: - numberOfRowsInSection
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
@@ -87,6 +92,8 @@ extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    // MARK: - cellForRowAt
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let catalogSection = CatalogSection(rawValue: indexPath.section)
@@ -105,6 +112,8 @@ extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    // MARK: - viewForHeaderInSection
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: CategoryHeaderView.reuseID) as? CategoryHeaderView else {
             return nil
@@ -122,6 +131,8 @@ extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    // MARK: - heightForHeaderInSection
+    
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         
         let catalogSection = CatalogSection(rawValue: section)
@@ -132,6 +143,16 @@ extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
         default:
             return 0.1
         }
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let catalogSection = CatalogSection(rawValue: indexPath.section),
+              catalogSection == .products else {
+            return
+        }
+        
+        let orderDetailsViewController = OrderDetailsViewController(product: products[indexPath.row])
+        present(orderDetailsViewController, animated: true)
     }
     
 }
@@ -175,25 +196,27 @@ extension CatalogViewController {
 //MARK: - Networking
 
 extension CatalogViewController {
+    
+    private func fetchStories() {
+        stories = storiesService.fetchStories()
+        tableView.reloadSections(IndexSet(integer: CatalogSection.stories.rawValue), with: .automatic)
+    }
+    
     private func fetchBanners() {
         banners = bannersService.fetchBanners()
-        tableView.reloadData()
+        tableView.reloadSections(IndexSet(integer: CatalogSection.banners.rawValue), with: .automatic)
     }
     
     private func fetchProducts() {
         products = productService.fetchProducts()
-        tableView.reloadData()
+        tableView.reloadSections(IndexSet(integer: CatalogSection.products.rawValue), with: .automatic)
     }
     
     private func fetchCategories() {
         categories = productService.fetchCategories()
-        tableView.reloadData()
+        tableView.reloadSections(IndexSet(integer: CatalogSection.products.rawValue), with: .automatic)
     }
     
-    private func fetchStories() {
-        stories = storiesService.fetchStories()
-        tableView.reloadData()
-    }
 }
 
 #Preview {

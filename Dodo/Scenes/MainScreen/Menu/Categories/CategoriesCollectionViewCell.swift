@@ -17,17 +17,24 @@ final class CategoriesCollectionViewCell: UICollectionViewCell {
     
     private lazy var categoryButton: UIButton = {
         var configuration = UIButton.Configuration.plain()
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 8, bottom: 2, trailing: 8)
+        configuration.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10)
         
         let button = UIButton(configuration: configuration)
         button.layer.cornerRadius = 18
         button.clipsToBounds = false
         button.backgroundColor = .lightGray.withAlphaComponent(0.1)
         button.setTitleColor(.darkGray, for: .normal)
-        button.setTitle("title", for: .normal)
+        //button.setTitle("title", for: .normal)
+        
+        button.titleLabel?.numberOfLines = 1
+    
         button.addTarget(self, action: #selector(didTapCategoryButton), for: .touchUpInside)
         return button
     }()
+    
+    override func prepareForReuse() {
+        categoryButton.setTitle("", for: .normal)
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -75,8 +82,8 @@ extension CategoriesCollectionViewCell {
     
     private func setupConstraints() {
         categoryButton.snp.makeConstraints { make in
-            make.height.width.equalToSuperview()
-            make.center.equalToSuperview()
+            make.height.equalTo(34)
+            make.edges.equalTo(contentView)
         }
     }
 }

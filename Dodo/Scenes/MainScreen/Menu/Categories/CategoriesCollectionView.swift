@@ -11,12 +11,12 @@ final class CategoriesCollectionView: UICollectionView {
     
     static let reuseId = "CategoriesCollectionView"
     
-    private var categories: [String] = ["     ", "     ", "     "]
+    private var categories: [String] = []
     
     init() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
-        layout.itemSize = CGSize(width: 100, height: 34)
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         layout.minimumLineSpacing = 10
         super.init(frame: .zero, collectionViewLayout: layout)
         
@@ -24,6 +24,7 @@ final class CategoriesCollectionView: UICollectionView {
     }
     
     private func commonInit() {
+        heightAnchor.constraint(equalToConstant: 60).isActive = true
         backgroundColor = .clear
         dataSource = self
         delegate = self
