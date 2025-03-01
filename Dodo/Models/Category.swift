@@ -1,6 +1,6 @@
 import UIKit
 
 struct Category {
-    var label: String
-    var isActive: Bool
+    let label: String
+    var isSelected: Bool
 }

@@ -7,11 +7,11 @@ protocol CategoriesCollectionViewDelegate: AnyObject {
 
 final class CategoriesCollectionView: UICollectionView {
     
-    weak var delgate: CategoriesCollectionViewDelegate?
+    weak var categoriesDelegate: CategoriesCollectionViewDelegate?
     
     static let reuseId = "CategoriesCollectionView"
     
-    private var categories: [String] = []
+    private var categories: [Category] = []
     
     init() {
         let layout = UICollectionViewFlowLayout()
@@ -19,7 +19,6 @@ final class CategoriesCollectionView: UICollectionView {
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         layout.minimumLineSpacing = 10
         super.init(frame: .zero, collectionViewLayout: layout)
-        
         commonInit()
     }
     
@@ -36,7 +35,7 @@ final class CategoriesCollectionView: UICollectionView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(categories: [String]) {
+    func update(categories: [Category]) {
         self.categories = categories
         reloadData()
     }
@@ -54,7 +53,7 @@ extension CategoriesCollectionView: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoriesCollectionViewCell.reuseID, for: indexPath) as! CategoriesCollectionViewCell
         
-        cell.update(categoryName: categories[indexPath.row])
+        cell.update(category: categories[indexPath.row])
         cell.delegate = self
         
         return cell
@@ -65,7 +64,7 @@ extension CategoriesCollectionView: UICollectionViewDelegate, UICollectionViewDa
 
 extension CategoriesCollectionView: CategoriesCollectionViewCellDelegate {
     func didChangeCategory(_ categoryName: String) {
-        delgate?.didChangeCategory(categoryName)
+        categoriesDelegate?.didChangeCategory(categoryName)
     }
     
 }

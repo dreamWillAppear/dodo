@@ -17,7 +17,7 @@ final class CategoryHeaderView: UITableViewHeaderFooterView {
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        categoriesCollectionView.delgate = self
+        categoriesCollectionView.categoriesDelegate = self
         setupViews()
         setupConstraints()
     }
@@ -26,7 +26,7 @@ final class CategoryHeaderView: UITableViewHeaderFooterView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateCategories(_ categories: [String]) {
+    func updateCategories(_ categories: [Category]) {
         categoriesCollectionView.update(categories: categories)
     }
     

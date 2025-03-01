@@ -4,14 +4,13 @@ final class ProductService {
     
     private init() {}
     
-    private let categories: [String] = [
-        "Новинки",
-        "Пиццы",
-        "КомбоКомбо",
-        "Закуски",
-        "Завтраки",
-        "Напитки",
-        "Завтраки"
+    private let categories: [Category] = [
+        Category(label: "Новинки", isSelected: true),
+        Category(label: "Пиццы", isSelected: false),
+        Category(label: "Комбо", isSelected: false),
+        Category(label: "Закуски", isSelected: false),
+        Category(label: "Завтраки", isSelected: false),
+        Category(label: "Напитки", isSelected: false)
     ]
     
     private let products: [Product] = [
@@ -26,7 +25,7 @@ final class ProductService {
         Product(name: "Пепперони", details: "Тесто, Cыр, Перец, Томат, Лук", price: 710, image: "pepperoni")
     ]
     
-    func fetchCategories() -> [String] {
+    func fetchCategories() -> [Category] {
         categories
     }
     

@@ -15,26 +15,17 @@ final class CategoriesCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    private lazy var categoryButton: UIButton = {
-        var configuration = UIButton.Configuration.plain()
-        configuration.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 10, bottom: 2, trailing: 10)
-        
-        let button = UIButton(configuration: configuration)
-        button.layer.cornerRadius = 18
-        button.clipsToBounds = false
-        button.backgroundColor = .lightGray.withAlphaComponent(0.1)
-        button.setTitleColor(.darkGray, for: .normal)
-        //button.setTitle("title", for: .normal)
-        
-        button.titleLabel?.numberOfLines = 1
-    
-        button.addTarget(self, action: #selector(didTapCategoryButton), for: .touchUpInside)
-        return button
+    private lazy var categoryNameLabel: InsetLabel = {
+        let label = InsetLabel()
+        label.contentInset = UIEdgeInsets(top: 5, left: 15, bottom: 5, right: 15)
+        label.clipsToBounds = false
+        label.layer.masksToBounds = true
+        label.layer.cornerRadius = 20
+        label.backgroundColor = .lightGray.withAlphaComponent(0.1)
+        label.textColor = .darkGray
+        return label
     }()
-    
-    override func prepareForReuse() {
-        categoryButton.setTitle("", for: .normal)
-    }
+
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -48,40 +39,37 @@ final class CategoriesCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func update(categoryName: String) {
-        categoryButton.setTitle(categoryName, for: .normal)
-    }
-    
+  
     func update(category: Category) {
-        categoryButton.setTitle(category.label, for: .normal)
-        isActive = category.isActive
+        categoryNameLabel.text = category.label
+        isActive = category.isSelected
     }
     
     
     private func checkState() {
         if isActive {
-            categoryButton.setTitleColor(.orange, for: .normal)
-            categoryButton.backgroundColor = .orange.withAlphaComponent(0.1)
+            categoryNameLabel.textColor = .orange
+            categoryNameLabel.backgroundColor = .orange.withAlphaComponent(0.1)
         } else {
-            categoryButton.setTitleColor(.darkGray, for: .normal)
-            categoryButton.backgroundColor = .lightGray.withAlphaComponent(0.1)
+            categoryNameLabel.textColor = .darkGray
+            categoryNameLabel.backgroundColor = .lightGray.withAlphaComponent(0.1)
         }
     }
     
     @objc private func didTapCategoryButton() {
         isActive.toggle()
-        delegate?.didChangeCategory(categoryButton.titleLabel?.text ?? "")
+        delegate?.didChangeCategory(categoryNameLabel.text ?? "")
     }
     
 }
 
 extension CategoriesCollectionViewCell {
     private func setupViews() {
-        [categoryButton].forEach { contentView.addSubview($0) }
+        [categoryNameLabel].forEach { contentView.addSubview($0) }
     }
     
     private func setupConstraints() {
-        categoryButton.snp.makeConstraints { make in
+        categoryNameLabel.snp.makeConstraints { make in
             make.height.equalTo(34)
             make.edges.equalTo(contentView)
         }

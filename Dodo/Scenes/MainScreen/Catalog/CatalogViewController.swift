@@ -15,7 +15,7 @@ final class CatalogViewController: UIViewController {
     private let bannersService = BannersService.shared
     
     private var stories: [Story] = []
-    private var categories: [String] = []
+    private var categories: [Category] = []
     private var products: [Product] = []
     private var banners: [Banner] = []
 
