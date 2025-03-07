@@ -1,34 +1,38 @@
 import UIKit
 import SnapKit
 
+private enum OrderDetailsSection: Int, CaseIterable {
+    case productImage
+    case productNameAndDetails
+    case ingredients
+}
+
 final class OrderDetailsViewController: UIViewController {
-    
-    private let ingredientsService = IngredientsService.shared
-    
-    private var ingredients: [Ingredient] = [] {
-        didSet {
-            ingredientsCollectionView.update(ingredients)
-            calculateCollectionViewHeight()
-        }
-    }
-    
-    private var collectionViewHeight: CGFloat = 0 {
-        didSet {
-            ingredientsCollectionView.snp.updateConstraints { make in
-                make.height.equalTo(collectionViewHeight)
-            }
-            view.layoutIfNeeded()
-        }
-    }
     
     private let product: Product
     
-    private let ingredientsCollectionView = IngredientsCollectionView()
+    private let ingredientsService = IngredientsService.shared
     
-    private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        return scrollView
+    //private let ingredientsCollectionView = IngredientsCollectionView()
+    
+    private lazy var tabbleView: UITableView = {
+        let tableView = UITableView()
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.showsVerticalScrollIndicator = false
+        tableView.sectionHeaderTopPadding = 0
+        tableView.separatorStyle = .none
+        tableView.register(ProductImageTableViewCell.self, forCellReuseIdentifier: ProductImageTableViewCell.reuseID)
+        tableView.register(ProductNameAndDetailsCell.self, forCellReuseIdentifier: ProductNameAndDetailsCell.reuseID)
+        tableView.register(IngredientsTableViewCell.self, forCellReuseIdentifier: IngredientsTableViewCell.reuseID)
+        return tableView
     }()
+    
+    private var ingredients: [Ingredient] = [] {
+        didSet {
+            //ingredientsCollectionView.update(ingredients)
+        }
+    }
     
     private lazy var verticalStackView: UIStackView = {
         let stack = UIStackView()
@@ -47,23 +51,6 @@ final class OrderDetailsViewController: UIViewController {
         return imageView
     }()
         
-    private lazy var nameLabel: UILabel = {
-        let label = UILabel()
-        label.font = UIFont.boldSystemFont(ofSize: 20)
-        label.text = product.name
-        label.textColor = .black
-        return label
-    }()
-    
-    private lazy var detailLabel: UILabel = {
-        let label = UILabel()
-        label.text = product.details
-        label.font = UIFont.boldSystemFont(ofSize: 15)
-        label.textColor = .darkGray
-        label.numberOfLines = 0
-        return label
-    }()
-
     init(product: Product) {
         self.product = product
         super.init(nibName: nil, bundle: nil)
@@ -79,52 +66,113 @@ final class OrderDetailsViewController: UIViewController {
         setupViews()
         setupConstraints()
         fetchIngredients()
-        calculateCollectionViewHeight()
     }
-    
-    override func viewDidLayoutSubviews() {
-           super.viewDidLayoutSubviews()
-           calculateCollectionViewHeight()
-       }
 }
 
 extension OrderDetailsViewController {
     private func setupViews() {
-        view.addSubview(scrollView)
-        scrollView.addSubview(verticalStackView)
-        [productImageView, nameLabel, detailLabel, ingredientsCollectionView].forEach { verticalStackView.addArrangedSubview($0) }
+        view.addSubview(tabbleView)
     }
     
     private func setupConstraints() {
-        scrollView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaLayoutGuide)
-        }
-        
-        verticalStackView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.top.bottom.equalToSuperview()
+        tabbleView.snp.makeConstraints { make in
+            make.top.equalTo(view.snp_topMargin)
+            make.bottom.equalTo(view.snp.bottom)
             make.leading.trailing.equalToSuperview().inset(16)
-         }
-            
-        ingredientsCollectionView.snp.makeConstraints { make in
-            make.height.equalTo(0)
         }
     }
 }
 
-//MARK: - Calculate Collection View Height
+
+// MARK: - UITableViewDelegate & UITableViewDataSource
+
+extension OrderDetailsViewController: UITableViewDataSource, UITableViewDelegate {
+    
+    //MARK: - cellForRowAt
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let catalogSection = OrderDetailsSection(rawValue: indexPath.section)
+        
+        switch catalogSection {
+        case .productImage:
+            return productImageCellConfigure(indexPath: indexPath)
+        case .productNameAndDetails:
+            return productNameAndDetailsCellConfigure(indexPath: indexPath)
+        case .ingredients:
+            return ingredientsTableViewCellConfigure(indexPath: indexPath)
+        default:
+            return .init()
+        }
+    }
+    
+    
+    // MARK: - numberOfSections
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        OrderDetailsSection.allCases.count
+    }
+    
+    // MARK: - numberOfRowsInSection
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        let catalogSection = OrderDetailsSection(rawValue: section)
+        
+        switch catalogSection {
+        case .productImage:
+            return 1
+        case .productNameAndDetails:
+            return 1
+        case .ingredients:
+            return 1
+        default:
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+        let catalogSection = OrderDetailsSection(rawValue: indexPath.row)
+        
+        switch catalogSection {
+        case .ingredients:
+            return 1500
+        default:
+            return 0
+        }
+    }
+}
+
+//MARK: - Configure Cell For Section
 
 extension OrderDetailsViewController {
-    private func calculateCollectionViewHeight() {
-        let rows = ceil(Double(ingredients.count) / 3.0)
-        let itemHeight: CGFloat = 160
-        let spacing: CGFloat = 10
-        
-        let newHeight = (CGFloat(rows) * itemHeight) + (CGFloat(rows - 1) * spacing)
-        
-        if collectionViewHeight != newHeight {
-            collectionViewHeight = newHeight
+    private func productImageCellConfigure(indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tabbleView.dequeueReusableCell(withIdentifier: ProductImageTableViewCell.reuseID, for: indexPath) as? ProductImageTableViewCell else {
+            return .init()
         }
+        
+        cell.update(product.image)
+        
+        return cell
+    }
+    
+    private func productNameAndDetailsCellConfigure(indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tabbleView.dequeueReusableCell(withIdentifier: ProductNameAndDetailsCell.reuseID, for: indexPath) as? ProductNameAndDetailsCell else {
+            return .init()
+        }
+        
+        cell.update(product.name, product.details)
+        
+        return cell
+    }
+    
+    private func ingredientsTableViewCellConfigure(indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tabbleView.dequeueReusableCell(withIdentifier: IngredientsTableViewCell.reuseID, for: indexPath) as? IngredientsTableViewCell else {
+            return .init()
+        }
+        
+        cell.update(ingredients)
+        
+        return cell
     }
 }
 
@@ -133,7 +181,7 @@ extension OrderDetailsViewController {
 extension OrderDetailsViewController {
     private func fetchIngredients() {
         ingredients = ingredientsService.fetchIngredientss()
-        ingredientsCollectionView.update(ingredients)
+        //ingredientsCollectionView.update(ingredients)
     }
 }
 
@@ -147,4 +195,3 @@ extension OrderDetailsViewController {
         )
     )
 }
-

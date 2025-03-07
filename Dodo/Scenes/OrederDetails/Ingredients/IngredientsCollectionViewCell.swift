@@ -3,11 +3,15 @@ import SnapKit
 
 final class IngredientsCollectionViewCell: UICollectionViewCell {
     
+    private var isSelectedIngredient = false
+    
     private lazy var containerView: UIView = {
         let view = UIView()
         view.backgroundColor = .white
         view.clipsToBounds = true
         view.applyShadow(cornerRadius: 10)
+        view.layer.borderWidth = 3
+        view.layer.borderColor = UIColor.clear.cgColor
         return view
     }()
     
@@ -69,6 +73,12 @@ final class IngredientsCollectionViewCell: UICollectionViewCell {
         photoImageView.image = UIImage(named: ingredient.image)
         ingredientNameLabel.text = ingredient.name
         priceLabel.text = "\(ingredient.price) Р"
+        isSelectedIngredient = ingredient.isSelected
+        updateSelectedState()
+    }
+    
+    private func updateSelectedState() {
+        containerView.layer.borderColor = isSelectedIngredient ? UIColor.orange.cgColor : UIColor.clear.cgColor
     }
     
 }

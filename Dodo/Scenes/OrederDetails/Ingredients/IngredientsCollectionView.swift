@@ -3,15 +3,17 @@ import SnapKit
 
 final class IngredientsCollectionView: UICollectionView {
     
-    private var ingredients: [Ingredient] = []
+    lazy var ingredientsCount = ingredients.count
     
+    private var ingredients: [Ingredient] = []
+        
     let width = UIScreen.main.bounds.width
         
     init() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.itemSize = CGSize(width: width / 3 - 18, height: 150)
-        layout.minimumLineSpacing = 18
+        layout.minimumLineSpacing = 10
         super.init(frame: .zero, collectionViewLayout: layout)
         commonInit()
     }
