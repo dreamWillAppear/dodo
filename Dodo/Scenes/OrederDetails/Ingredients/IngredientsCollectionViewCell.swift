@@ -1,17 +1,39 @@
 import UIKit
 import SnapKit
 
-import UIKit
-import SnapKit
-
 final class IngredientsCollectionViewCell: UICollectionViewCell {
-        
+    
+    private lazy var containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .white
+        view.clipsToBounds = true
+        view.applyShadow(cornerRadius: 10)
+        return view
+    }()
+    
+    private lazy var verticalStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.distribution = .fillProportionally
+        stack.directionalLayoutMargins = NSDirectionalEdgeInsets(
+            top: 5,
+            leading: 5,
+            bottom: 5,
+            trailing: 5
+        )
+        stack.alignment = .center
+        stack.distribution = .fillProportionally
+        stack.clipsToBounds = true
+        stack.isLayoutMarginsRelativeArrangement = true
+        return stack
+    }()
+    
     private lazy var photoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.contentMode = .scaleAspectFill
-        imageView.layer.cornerRadius = 20
-        imageView.clipsToBounds = true
-        imageView.backgroundColor = .orange
+        let width = UIScreen.main.bounds.width
+        imageView.heightAnchor.constraint(equalToConstant: width * 0.23).isActive = true
+        imageView.widthAnchor.constraint(equalToConstant: width * 0.23).isActive = true
+        imageView.contentMode = .scaleAspectFit
         imageView.image = UIImage(named: PizzaImageName.defaultPizza)
         return imageView
     }()
@@ -19,6 +41,8 @@ final class IngredientsCollectionViewCell: UICollectionViewCell {
     private lazy var ingredientNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
+        label.textAlignment = .center
+        label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 12)
         return label
     }()
@@ -26,7 +50,7 @@ final class IngredientsCollectionViewCell: UICollectionViewCell {
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
         label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         return label
     }()
     
@@ -51,16 +75,38 @@ final class IngredientsCollectionViewCell: UICollectionViewCell {
 
 extension IngredientsCollectionViewCell {
     private func setupViews() {
-        [photoImageView, ingredientNameLabel, priceLabel].forEach { contentView.addSubview($0) }
+        verticalStackView.addArrangedSubview(ingredientNameLabel)
+        verticalStackView.addArrangedSubview(priceLabel)
+
+        containerView.addSubview(photoImageView)
+        containerView.addSubview(verticalStackView)
+        contentView.addSubview(containerView)
     }
     
     private func setupConstraints() {
+        containerView.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(5)
+        }
+        
         photoImageView.snp.makeConstraints { make in
-            make.height.width.equalToSuperview()
+            make.top.equalTo(containerView.snp.top)
+            make.centerX.equalToSuperview()
+        }
+
+        verticalStackView.snp.makeConstraints { make in
+            make.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
         }
     }
 }
 
 #Preview {
-    CatalogViewController()
+    OrderDetailsViewController(
+        product: Product(
+            name: "Маргарита",
+            details: "Тесто, Cыр, Колбаска",
+            price: 650,
+            image: PizzaImageName.margarita
+        )
+    )
 }

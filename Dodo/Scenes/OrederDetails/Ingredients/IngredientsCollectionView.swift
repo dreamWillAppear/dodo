@@ -3,25 +3,33 @@ import SnapKit
 
 final class IngredientsCollectionView: UICollectionView {
     
-    private let ingredients: [Ingredient] = []
+    private var ingredients: [Ingredient] = []
     
+    let width = UIScreen.main.bounds.width
+        
     init() {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumLineSpacing = 5
         layout.scrollDirection = .vertical
-      
+        layout.itemSize = CGSize(width: width / 3 - 18, height: 150)
+        layout.minimumLineSpacing = 18
         super.init(frame: .zero, collectionViewLayout: layout)
+        commonInit()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    func update(_ ingredients: [Ingredient]) {
+        self.ingredients = ingredients
+        reloadData()
+    }
+    
     private func commonInit() {
         backgroundColor = .clear
         dataSource = self
         delegate = self
-        showsHorizontalScrollIndicator = false
+        showsVerticalScrollIndicator = false
         registerCell(IngredientsCollectionViewCell.self)
     }
     
@@ -35,6 +43,23 @@ extension IngredientsCollectionView: UICollectionViewDelegate, UICollectionViewD
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        .init()
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: IngredientsCollectionViewCell.reuseID, for: indexPath) as? IngredientsCollectionViewCell else {
+            return .init()
+        }
+        
+        cell.update(ingredients[indexPath.row])
+    
+        return cell
     }
+}
+
+#Preview {
+    OrderDetailsViewController(
+        product: Product(
+            name: "Маргарита",
+            details: "Тесто, Cыр, Колбаска",
+            price: 650,
+            image: PizzaImageName.margarita
+        )
+    )
 }
