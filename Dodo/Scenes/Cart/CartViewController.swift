@@ -34,6 +34,8 @@ final class CartViewController: UIViewController {
     }
 }
 
+// MARK: - Setup Views & Layout
+
 extension CartViewController {
     private func setupViews() {
         view.addSubview(tableView)
@@ -45,6 +47,8 @@ extension CartViewController {
         }
     }
 }
+
+//MARK: - UITableViewDelegate, UITableViewDataSource
 
 extension CartViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -61,11 +65,7 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
             return .init()
         }
     }
-}
 
-//MARK: - Configure Cell For Section
-
-extension CartViewController {
     private func configureProductCell(indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CartProductCell.reuseID, for: indexPath) as? CartProductCell else {
             return .init()

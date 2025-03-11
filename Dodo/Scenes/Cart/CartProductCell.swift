@@ -119,29 +119,3 @@ extension CartProductCell {
 //                         Product(name: "Пепперони", details: "Тесто, Cыр, Перец, Томат, Лук", price: 710, image: "pepperoni")]
 //    )
 //}
-
-class ImageFetcher {}
-
-
-extension ImageFetcher {
-    func fetchImages(from urls: [URL], completion: @escaping ([UIImage]) -> Void) {
-        var images: [UIImage] = []
-        let group = DispatchGroup()
-        let locker = NSLock()
-        
-        for url in urls {
-            let request = URLRequest(url: url)
-            URLSession.shared.dataTask(with: request) { data, _, _ in
-                if let data, let image = UIImage(data: data) {
-                    images.append(image)
-                }
-            }.resume()
-        }
-        
-        group.notify(queue: .main) {
-            completion(images)
-        }
-    }
-}
-
-
