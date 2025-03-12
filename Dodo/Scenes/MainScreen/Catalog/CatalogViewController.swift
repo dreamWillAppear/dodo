@@ -18,6 +18,20 @@ final class CatalogViewController: UIViewController {
     private var categories: [Category] = []
     private var products: [Product] = []
     private var banners: [Banner] = []
+    
+    private lazy var cartButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "basket.fill"), for: .normal)
+        button.tintColor = .orange
+        button.backgroundColor = .white
+        button.layer.masksToBounds = false
+        button.layer.cornerRadius = 30
+        button.layer.borderWidth = 2
+        button.layer.borderColor = UIColor.orange.cgColor
+        button.applyShadow(cornerRadius: 30)
+        button.addTarget(self, action: #selector(didTapCartButton), for: .touchUpInside)
+        return button
+    }()
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -52,12 +66,18 @@ final class CatalogViewController: UIViewController {
 extension CatalogViewController {
     private func setupViews() {
         [tableView].forEach { view.addSubview($0) }
+        view.addSubview(cartButton)
     }
     
     private func setupConstraints() {
         tableView.snp.makeConstraints { make in
             make.top.bottom.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview()
+        }
+        
+        cartButton.snp.makeConstraints { make in
+            make.height.width.equalTo(60)
+            make.bottom.trailing.equalTo(view).inset(32)
         }
     }
 }
@@ -145,6 +165,8 @@ extension CatalogViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    // MARK: - didSelectRowAt (Tap Cell)
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let catalogSection = CatalogSection(rawValue: indexPath.section),
               catalogSection == .products else {
@@ -191,6 +213,17 @@ extension CatalogViewController {
         
         return cell
     }
+}
+
+//MARK: - Button Actions
+
+extension CatalogViewController {
+    
+    @objc func didTapCartButton() {
+        let cartViewController = CartViewController(products: products)
+        present(cartViewController, animated: true)
+    }
+    
 }
 
 //MARK: - Networking
