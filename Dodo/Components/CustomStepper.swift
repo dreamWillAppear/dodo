@@ -5,7 +5,7 @@ final class CustomStepper: UIControl {
     
     var currentValue = 1 {
         didSet {
-            currentValue = currentValue > 0 ? currentValue : 0
+            currentValue = currentValue > 1 ? currentValue : 1
             currentStepValueLabel.text = "\(currentValue)"
         }
     }
@@ -56,7 +56,7 @@ final class CustomStepper: UIControl {
     //MARK: - Private
     private func setupViews() {
         backgroundColor = .systemGray6
-        layer.cornerRadius = 20
+        layer.cornerRadius = 18
         
         addSubview(horizontalStackView)
         horizontalStackView.addArrangedSubview(decreaseButton)
@@ -66,7 +66,7 @@ final class CustomStepper: UIControl {
     
     private func setupContraints() {
         horizontalStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(10)
+            make.edges.equalToSuperview()
         }
     }
     
@@ -80,6 +80,13 @@ final class CustomStepper: UIControl {
         default:
             break
         }
-        sendActions(for: .touchUpInside)
+        sendActions(for: .valueChanged)
     }
+}
+#Preview {
+    CartViewController(products:
+                        [Product(name: "Гавайская", details: "Тесто, Cыр, Буженина", price: 590, image: "hawaii"),
+                         Product(name: "Маргарита", details: "Тесто, Cыр, Колбаска", price: 650, image: "margarita"),
+                         Product(name: "Пепперони", details: "Тесто, Cыр, Перец, Томат, Лук", price: 710, image: "pepperoni")]
+    )
 }
