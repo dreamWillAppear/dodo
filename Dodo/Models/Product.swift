@@ -3,4 +3,5 @@ struct Product {
     var details: String
     var price: Int
     var image: String
+    let isAddition: Bool
 }

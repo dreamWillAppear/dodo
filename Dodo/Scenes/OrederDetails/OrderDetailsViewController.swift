@@ -191,7 +191,8 @@ extension OrderDetailsViewController {
             name: "Маргарита",
             details: "Тесто, Cыр, Колбаска",
             price: 650,
-            image: PizzaImageName.margarita
+            image: ProductImageName.margarita,
+            isAddition: false
         )
     )
 }

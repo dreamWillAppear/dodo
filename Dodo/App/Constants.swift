@@ -1,9 +1,16 @@
-struct PizzaImageName {
+struct ProductImageName {
     static let hawaii = "hawaii"
     static let pepperoni = "pepperoni"
     static let margarita = "margarita"
     static let defaultPizza = "defaultPizza"
+    static let bbqSauce = "bbqSauce"
+    static let cheeseSauce = "cheeseSauce"
+    static let condensedMilk = "condensedMilk"
+    static let garlicSauce = "garlicSauce"
+    static let mustardSauce = "mustardSauce"
+    static let raspberryJam = "raspberryJam"
 }
+
 
 struct StoriesImageName {
     static let story0 = "dodoStory0"

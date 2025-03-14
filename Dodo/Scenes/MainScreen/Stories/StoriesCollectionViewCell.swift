@@ -11,7 +11,7 @@ final class StoriesCollectionViewCell: UICollectionViewCell {
         imageView.layer.cornerRadius = 20
         imageView.clipsToBounds = true
         imageView.backgroundColor = .orange
-        imageView.image = UIImage(named: PizzaImageName.defaultPizza)
+        imageView.image = UIImage(named: ProductImageName.defaultPizza)
         return imageView
     }()
     

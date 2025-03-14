@@ -38,7 +38,7 @@ final class IngredientsCollectionViewCell: UICollectionViewCell {
         imageView.heightAnchor.constraint(equalToConstant: width * 0.23).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: width * 0.23).isActive = true
         imageView.contentMode = .scaleAspectFit
-        imageView.image = UIImage(named: PizzaImageName.defaultPizza)
+        imageView.image = UIImage(named: ProductImageName.defaultPizza)
         return imageView
     }()
     
@@ -116,7 +116,8 @@ extension IngredientsCollectionViewCell {
             name: "Маргарита",
             details: "Тесто, Cыр, Колбаска",
             price: 650,
-            image: PizzaImageName.margarita
+            image: ProductImageName.margarita,
+            isAddition: false
         )
     )
 }

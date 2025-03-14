@@ -64,7 +64,7 @@ final class ProductTableViewCell: UITableViewCell {
     private lazy var productImageView: UIImageView = {
         let imageView = UIImageView()
         let width = UIScreen.main.bounds.width
-        imageView.image = UIImage(named: PizzaImageName.defaultPizza)
+        imageView.image = UIImage(named: ProductImageName.defaultPizza)
         imageView.contentMode = .scaleAspectFill
         imageView.heightAnchor.constraint(equalToConstant: width * 0.4).isActive = true
         imageView.widthAnchor.constraint(equalToConstant: width * 0.4).isActive = true

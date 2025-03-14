@@ -8,7 +8,7 @@ final class BannersCollectionViewCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .orange
-        imageView.image = UIImage(named: PizzaImageName.defaultPizza)
+        imageView.image = UIImage(named: ProductImageName.defaultPizza)
         imageView.widthAnchor.constraint(equalToConstant: width * 0.2).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: width * 0.2).isActive = true
         return imageView

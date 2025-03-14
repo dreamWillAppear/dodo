@@ -71,7 +71,8 @@ extension CatalogViewController {
     
     private func setupConstraints() {
         tableView.snp.makeConstraints { make in
-            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(view)
             make.leading.trailing.equalToSuperview()
         }
         
@@ -241,7 +242,7 @@ extension CatalogViewController {
     }
     
     private func fetchProducts() {
-        products = productService.fetchProducts()
+        products = productService.fetchProducts().filter { !$0.isAddition }
         tableView.reloadSections(IndexSet(integer: CatalogSection.products.rawValue), with: .automatic)
     }
     
