@@ -2,9 +2,10 @@ import UIKit
 import SnapKit
 
 private enum CartSections: Int, CaseIterable {
-    case summaryLabel
+    case priceLabel
     case product
     case additions
+    case summary
 }
 
 final class CartViewController: UIViewController {
@@ -21,11 +22,14 @@ final class CartViewController: UIViewController {
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.backgroundColor = .white
-        tableView.register(SummaryLabelCell.self, forCellReuseIdentifier: SummaryLabelCell.reuseID)
+        tableView.register(PriceLabelCell.self, forCellReuseIdentifier: PriceLabelCell.reuseID)
         tableView.register(CartProductCell.self, forCellReuseIdentifier: CartProductCell.reuseID)
         tableView.register(AdditionsCell.self, forCellReuseIdentifier: AdditionsCell.reuseID)
+        tableView.register(SummaryCell.self, forCellReuseIdentifier: SummaryCell.reuseID)
         return tableView
     }()
+    
+    private lazy var makeOrderView = MakeOrderView()
     
     init(products: [Product]) {
         self.products = products
@@ -42,7 +46,23 @@ final class CartViewController: UIViewController {
         setupViews()
         setupConstraints()
         fetchAdditionProducts()
+        observe()
     }
+}
+
+extension CartViewController {
+    func observe() {
+      
+        makeOrderView.deliveryPriceButton.onAction = {
+            //TODO: Bottom Sheet Needed
+        }
+        
+    }
+        
+    func makeOrderButtonTapped() {
+        
+    }
+    
 }
 
 // MARK: - Setup Views & Layout
@@ -50,12 +70,18 @@ final class CartViewController: UIViewController {
 extension CartViewController {
     private func setupViews() {
         view.addSubview(tableView)
+        view.addSubview(makeOrderView)
     }
     
     private func setupConstraints() {
         tableView.snp.makeConstraints { make in
             make.top.bottom.equalTo(view.safeAreaLayoutGuide)
             make.leading.trailing.equalToSuperview().inset(16)
+        }
+        
+        makeOrderView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
     }
 }
@@ -75,11 +101,13 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
         let sections = CartSections(rawValue: section)
         
         switch sections {
-        case .summaryLabel:
+        case .priceLabel:
             return 1
         case .product:
             return products.count
         case .additions:
+            return 1
+        case .summary:
             return 1
         default :
             return 0
@@ -92,12 +120,14 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
         let sections = CartSections(rawValue: indexPath.section)
         
         switch sections {
-        case .summaryLabel:
-            return configureSummaryLabelCell(indexPath: indexPath)
+        case .priceLabel:
+            return configurePriceLabelCell(indexPath: indexPath)
         case .product:
             return configureProductCell(indexPath: indexPath)
         case .additions:
             return configureAdditionalCell(indexPath: indexPath)
+        case .summary:
+            return configureSummaryCell(indexPath: indexPath)
         default:
             return .init()
         }
@@ -120,9 +150,9 @@ extension CartViewController {
         return cell
     }
     
-    private func configureSummaryLabelCell(indexPath: IndexPath) -> UITableViewCell {
+    private func configurePriceLabelCell(indexPath: IndexPath) -> UITableViewCell {
         
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: SummaryLabelCell.reuseID, for: indexPath) as? SummaryLabelCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: PriceLabelCell.reuseID, for: indexPath) as? PriceLabelCell else {
             return .init()
         }
         
@@ -142,6 +172,16 @@ extension CartViewController {
         }
         
         cell.update(additionalProducts)
+        
+        return cell
+        
+    }
+    
+    private func configureSummaryCell(indexPath: IndexPath) -> UITableViewCell {
+        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: SummaryCell.reuseID, for: indexPath) as? SummaryCell else {
+            return .init()
+        }
         
         return cell
         

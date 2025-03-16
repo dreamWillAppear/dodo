@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-final class SummaryLabelCell: UITableViewCell {
+final class PriceLabelCell: UITableViewCell {
     
     private lazy var label: UILabel = {
         let label = UILabel()
@@ -31,7 +31,7 @@ final class SummaryLabelCell: UITableViewCell {
 
     //MARK: - Setup Views & Constraints
 
-extension SummaryLabelCell {
+extension PriceLabelCell {
     
     private func setupViews() {
         contentView.addSubview(label)
