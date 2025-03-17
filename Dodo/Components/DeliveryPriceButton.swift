@@ -40,7 +40,7 @@ final class DeliveryPriceButton: UIControl {
 
 extension DeliveryPriceButton {
     
-    func tapAction() {
+    @objc func tapAction() {
         //sendActions(for: .touchUpInside)
         onAction?()
     }

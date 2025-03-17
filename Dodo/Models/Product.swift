@@ -1,4 +1,4 @@
-struct Product {
+struct Product: Decodable {
     var name: String
     var details: String
     var price: Int

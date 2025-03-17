@@ -1,3 +1,5 @@
+import UIKit
+
 final class ProductService {
     
     static let shared = ProductService()
@@ -35,8 +37,29 @@ final class ProductService {
         categories
     }
     
-    func fetchProducts() -> [Product] {
-        products
+    func fetchProducts(completion: @escaping (Result<[Product], NetworkError>) -> Void) {
+        URLSession.shared.dataTask(with: API.Endpoint.products.url) { data, response, error in
+            guard let data, error == nil else {
+                completion(.failure(.noData))
+                return
+            }
+            
+            if let response = response as? HTTPURLResponse {
+                print("LOG " + response.statusCode.description)
+            }
+            
+            let decoder = JSONDecoder()
+            
+            do {
+                let productQuery = try decoder.decode([Product].self, from: data)
+                
+                DispatchQueue.main.async {
+                    completion(.success(productQuery))
+                }
+            } catch {
+                completion(.failure(.decodingFailed))
+            }
+        }.resume()
     }
     
 }

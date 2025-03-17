@@ -194,7 +194,7 @@ extension CartViewController {
 extension CartViewController {
     
     private func fetchAdditionProducts() {
-        additionalProducts = productSercvice.fetchProducts().filter { $0.isAddition }
+       // additionalProducts = productSercvice.fetchProducts().filter { $0.isAddition }
     }
     
 }

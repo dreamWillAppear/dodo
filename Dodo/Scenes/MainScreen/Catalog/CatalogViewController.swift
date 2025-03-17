@@ -242,8 +242,19 @@ extension CatalogViewController {
     }
     
     private func fetchProducts() {
-        products = productService.fetchProducts().filter { !$0.isAddition }
-        tableView.reloadSections(IndexSet(integer: CatalogSection.products.rawValue), with: .automatic)
+        productService.fetchProducts { [weak self] result in
+            switch result {
+            case .success(let success):
+                self?.products = success.filter { !$0.isAddition }
+                
+                DispatchQueue.main.async {
+                    self?.tableView.reloadSections(IndexSet(integer: CatalogSection.products.rawValue), with: .automatic)
+                          }
+                
+            case .failure(let failure):
+                print(failure.localizedDescription)
+            }
+        }
     }
     
     private func fetchCategories() {
