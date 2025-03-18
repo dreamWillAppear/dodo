@@ -1,0 +1,164 @@
+{
+  "uuid": "b2d02f9c-a456-4524-8ade-55c6d603b3e7",
+  "lastMigration": 33,
+  "name": "MyDodo",
+  "endpointPrefix": "",
+  "latency": 1000,
+  "port": 3000,
+  "hostname": "",
+  "folders": [],
+  "routes": [
+    {
+      "uuid": "d39c2554-c0be-4356-bff3-0830b48a8a99",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "categories",
+      "responses": [
+        {
+          "uuid": "f531a78f-3cbe-4c22-837b-2f0e34a0bcba",
+          "body": "[\n    { \"label\": \"Новинки\", \"isSelected\": true },\n    { \"label\": \"Пиццы\", \"isSelected\": false },\n    { \"label\": \"Комбо\", \"isSelected\": false },\n    { \"label\": \"Закуски\", \"isSelected\": false },\n    { \"label\": \"Завтраки\", \"isSelected\": false },\n    { \"label\": \"Напитки\", \"isSelected\": false }\n ]\n",
+          "latency": 5000,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "82b98951-4504-4306-bd01-93804c2251be",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "products",
+      "responses": [
+        {
+          "uuid": "b567e05b-f5f1-4648-8dee-5313e452c1fa",
+          "body": "[\n    { \"name\": \"Гавайская\", \"details\": \"Тесто, Cыр, Буженина\", \"price\": 590, \"image\": \"hawaii\", \"isAddition\": false },\n    { \"name\": \"Маргарита\", \"details\": \"Тесто, Cыр, Колбаска\", \"price\": 650, \"image\": \"margarita\", \"isAddition\": false },\n    { \"name\": \"Пепперони\", \"details\": \"Тесто, Cыр, Перец, Томат, Лук\", \"price\": 710, \"image\": \"pepperoni\", \"isAddition\": false },\n    { \"name\": \"Барбекю\", \"details\": \"\", \"price\": 66, \"image\": \"bbqSauce\", \"isAddition\": true },\n    { \"name\": \"Сырный соус\", \"details\": \"\", \"price\": 66, \"image\": \"cheeseSauce\", \"isAddition\": true },\n    { \"name\": \"Сгущенное молоко\", \"details\": \"\", \"price\": 57, \"image\": \"condensedMilk\", \"isAddition\": true },\n    { \"name\": \"Чесночный соус\", \"details\": \"\", \"price\": 75, \"image\": \"garlicSauce\", \"isAddition\": true },\n    { \"name\": \"Горчичный соус\", \"details\": \"\", \"price\": 51, \"image\": \"mustardSauce\", \"isAddition\": true },\n    { \"name\": \"Малиновый джем\", \"details\": \"\", \"price\": 65, \"image\": \"raspberryJam\", \"isAddition\": true }\n ]\n",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "c2f65fad-0273-478f-bfd9-d20982afa8ed",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "banners",
+      "responses": [
+        {
+          "uuid": "355e1c5a-a637-41e8-8068-0a02b951b2cc",
+          "body": "[\n    { \"name\": \"Гавайская\", \"price\": 590, \"image\": \"hawaii\" },\n    { \"name\": \"Маргарита\", \"price\": 650, \"image\": \"margarita\" },\n    { \"name\": \"Пепперони\", \"price\": 710, \"image\": \"pepperoni\" },\n    { \"name\": \"Гавайская\", \"price\": 590, \"image\": \"hawaii\" },\n    { \"name\": \"Маргарита\", \"price\": 650, \"image\": \"margarita\" },\n    { \"name\": \"Пепперони\", \"price\": 710, \"image\": \"pepperoni\" },\n    { \"name\": \"Гавайская\", \"price\": 590, \"image\": \"hawaii\" },\n    { \"name\": \"Маргарита\", \"price\": 650, \"image\": \"margarita\" },\n    { \"name\": \"Пепперони\", \"price\": 710, \"image\": \"pepperoni\" }\n]\n",
+          "latency": 0,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    }
+  ],
+  "rootChildren": [
+    {
+      "type": "route",
+      "uuid": "d39c2554-c0be-4356-bff3-0830b48a8a99"
+    },
+    {
+      "type": "route",
+      "uuid": "82b98951-4504-4306-bd01-93804c2251be"
+    },
+    {
+      "type": "route",
+      "uuid": "c2f65fad-0273-478f-bfd9-d20982afa8ed"
+    }
+  ],
+  "proxyMode": false,
+  "proxyHost": "",
+  "proxyRemovePrefix": false,
+  "tlsOptions": {
+    "enabled": false,
+    "type": "CERT",
+    "pfxPath": "",
+    "certPath": "",
+    "keyPath": "",
+    "caPath": "",
+    "passphrase": ""
+  },
+  "cors": true,
+  "headers": [
+    {
+      "key": "Content-Type",
+      "value": "application/json"
+    },
+    {
+      "key": "Access-Control-Allow-Origin",
+      "value": "*"
+    },
+    {
+      "key": "Access-Control-Allow-Methods",
+      "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+    },
+    {
+      "key": "Access-Control-Allow-Headers",
+      "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+    }
+  ],
+  "proxyReqHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "proxyResHeaders": [
+    {
+      "key": "",
+      "value": ""
+    }
+  ],
+  "data": [],
+  "callbacks": []
+}
