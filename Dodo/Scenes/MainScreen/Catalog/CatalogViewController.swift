@@ -32,7 +32,7 @@ final class CatalogViewController: UIViewController {
         button.addTarget(self, action: #selector(didTapCartButton), for: .touchUpInside)
         return button
     }()
-
+    
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
@@ -58,7 +58,7 @@ final class CatalogViewController: UIViewController {
         fetchCategories()
         fetchProducts()
     }
-        
+    
 }
 
 // MARK: - Setup Views & Layout
@@ -206,7 +206,7 @@ extension CatalogViewController {
         
         return cell
     }
-        
+    
     func configureMenuCell(indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ProductTableViewCell.reuseID, for: indexPath) as! ProductTableViewCell
         
@@ -237,8 +237,19 @@ extension CatalogViewController {
     }
     
     private func fetchBanners() {
-        banners = bannersService.fetchBanners()
-        tableView.reloadSections(IndexSet(integer: CatalogSection.banners.rawValue), with: .automatic)
+        bannersService.fetchBanners { [weak self] result in
+            switch result {
+            case .success(let success):
+                self?.banners = success
+                
+                DispatchQueue.main.async {
+                    self?.tableView.reloadSections(IndexSet(integer: CatalogSection.banners.rawValue), with: .automatic)
+                }
+                
+            case .failure(let failure):
+                print(failure.localizedDescription)
+            }
+        }
     }
     
     private func fetchProducts() {
@@ -249,7 +260,7 @@ extension CatalogViewController {
                 
                 DispatchQueue.main.async {
                     self?.tableView.reloadSections(IndexSet(integer: CatalogSection.products.rawValue), with: .automatic)
-                          }
+                }
                 
             case .failure(let failure):
                 print(failure.localizedDescription)
@@ -258,8 +269,21 @@ extension CatalogViewController {
     }
     
     private func fetchCategories() {
-        categories = productService.fetchCategories()
-        tableView.reloadSections(IndexSet(integer: CatalogSection.products.rawValue), with: .automatic)
+        productService.fetchCategories { [weak self] result in
+            switch result {
+            case .success(let success):
+                DispatchQueue.main.async {
+                    self?.categories = success
+                    if let header = self?.tableView.headerView(forSection: CatalogSection.products.rawValue) as? CategoryHeaderView {
+                        header.updateCategories(success)
+                    } else {
+                        self?.tableView.reloadSections(IndexSet(integer: CatalogSection.products.rawValue), with: .automatic)
+                    }
+                }
+            case .failure(let failure):
+                print(failure.localizedDescription)
+            }
+        }
     }
     
 }

@@ -1,6 +1,6 @@
 import UIKit
 
-struct Category {
+struct Category: Decodable {
     let label: String
     var isSelected: Bool
 }

@@ -13,6 +13,7 @@ enum API {
     enum Endpoint: String {
         case categories = "/categories"
         case products = "/products"
+        case banners = "/banners"
         
         var url: URL {
             URL(string: "\(baseURL)" + self.rawValue)!

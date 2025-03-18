@@ -11,7 +11,11 @@ final class CategoriesCollectionView: UICollectionView {
     
     static let reuseId = "CategoriesCollectionView"
     
-    private var categories: [Category] = []
+    private var categories: [Category] = [] {
+        didSet {
+            self.reloadData()
+        }
+    }
     
     init() {
         let layout = UICollectionViewFlowLayout()
