@@ -5,23 +5,26 @@ final class StoriesService {
     static let shared = StoriesService()
     
     private init() {}
-    
-    private let stories: [Story] = [
-        Story(image: UIImage(named: StoriesImageName.story0)!),
-        Story(image: UIImage(named: StoriesImageName.story1)!),
-        Story(image: UIImage(named: StoriesImageName.story2)!),
-        Story(image: UIImage(named: StoriesImageName.story3)!),
-        Story(image: UIImage(named: StoriesImageName.story0)!),
-        Story(image: UIImage(named: StoriesImageName.story1)!),
-        Story(image: UIImage(named: StoriesImageName.story2)!),
-        Story(image: UIImage(named: StoriesImageName.story3)!),
-        Story(image: UIImage(named: StoriesImageName.story0)!),
-        Story(image: UIImage(named: StoriesImageName.story1)!),
-        Story(image: UIImage(named: StoriesImageName.story2)!),
-        Story(image: UIImage(named: StoriesImageName.story3)!)
-    ]
-    
-    func fetchStories() -> [Story] {
-        return stories
+        
+    func fetchStories(completion: @escaping (Result<[Story], NetworkError>) -> Void) {
+        URLSession.shared.dataTask(with: API.Endpoint.stories.url) { data, response, error in
+            guard let response = response as? HTTPURLResponse,  let data,  error == nil
+            else {
+                completion(.failure(.noData))
+                return
+            }
+            
+            if (200...299).contains(response.statusCode) {
+                let decoder = JSONDecoder()
+                
+                do {
+                    let storiesQuery = try decoder.decode([Story].self, from: data)
+                    completion(.success(storiesQuery))
+                } catch {
+                    completion(.failure(.decodingFailed))
+                }
+            }
+        }.resume()
     }
+    
 }

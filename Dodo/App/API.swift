@@ -14,6 +14,8 @@ enum API {
         case categories = "/categories"
         case products = "/products"
         case banners = "/banners"
+        case stories = "/stories"
+        case ingredients = "/ingredients"
         
         var url: URL {
             URL(string: "\(baseURL)" + self.rawValue)!

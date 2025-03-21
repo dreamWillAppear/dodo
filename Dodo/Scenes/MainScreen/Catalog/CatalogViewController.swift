@@ -232,8 +232,19 @@ extension CatalogViewController {
 extension CatalogViewController {
     
     private func fetchStories() {
-        stories = storiesService.fetchStories()
-        tableView.reloadSections(IndexSet(integer: CatalogSection.stories.rawValue), with: .automatic)
+        storiesService.fetchStories { [weak self] result in
+            switch result {
+            case .success(let success):
+                self?.stories = success
+
+                DispatchQueue.main.async {
+                    self?.tableView.reloadSections(IndexSet(integer: CatalogSection.stories.rawValue), with: .automatic)
+                }
+                
+            case .failure(let failure):
+                print(failure.localizedDescription)
+            }
+        }
     }
     
     private func fetchBanners() {
@@ -280,6 +291,7 @@ extension CatalogViewController {
                         self?.tableView.reloadSections(IndexSet(integer: CatalogSection.products.rawValue), with: .automatic)
                     }
                 }
+                
             case .failure(let failure):
                 print(failure.localizedDescription)
             }

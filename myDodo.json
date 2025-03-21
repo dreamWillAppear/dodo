@@ -18,7 +18,7 @@
         {
           "uuid": "f531a78f-3cbe-4c22-837b-2f0e34a0bcba",
           "body": "[\n    { \"label\": \"Новинки\", \"isSelected\": true },\n    { \"label\": \"Пиццы\", \"isSelected\": false },\n    { \"label\": \"Комбо\", \"isSelected\": false },\n    { \"label\": \"Закуски\", \"isSelected\": false },\n    { \"label\": \"Завтраки\", \"isSelected\": false },\n    { \"label\": \"Напитки\", \"isSelected\": false }\n ]\n",
-          "latency": 5000,
+          "latency": 1500,
           "statusCode": 200,
           "label": "",
           "headers": [],
@@ -100,6 +100,68 @@
       "responseMode": null,
       "streamingMode": null,
       "streamingInterval": 0
+    },
+    {
+      "uuid": "7f1af658-7a05-4867-bd29-0fcf4d61f28c",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "stories",
+      "responses": [
+        {
+          "uuid": "37b2aec8-0863-4c93-acfd-a548b0a8127d",
+          "body": "[\n    { \"image\": \"dodoStory0\" },\n    { \"image\": \"dodoStory1\" },\n    { \"image\": \"dodoStory2\" },\n    { \"image\": \"dodoStory3\" },\n    { \"image\": \"dodoStory0\" },\n    { \"image\": \"dodoStory1\" },\n    { \"image\": \"dodoStory2\" },\n    { \"image\": \"dodoStory3\" },\n    { \"image\": \"dodoStory0\" },\n    { \"image\": \"dodoStory1\" },\n    { \"image\": \"dodoStory2\" },\n    { \"image\": \"dodoStory3\" }\n  ]",
+          "latency": 1000,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
+    },
+    {
+      "uuid": "b8376019-f1d8-43a4-9b8d-55b30042fda0",
+      "type": "http",
+      "documentation": "",
+      "method": "get",
+      "endpoint": "ingredients",
+      "responses": [
+        {
+          "uuid": "b677168a-b840-4700-827f-f56873073300",
+          "body": " [\n    { \"image\": \"bacon\", \"name\": \"Бекон\", \"price\": 126, \"isSelected\": true },\n    { \"image\": \"hotChorizo\", \"name\": \"Острый чоризо\", \"price\": 91, \"isSelected\": false },\n    { \"image\": \"redOnion\", \"name\": \"Красный лук\", \"price\": 84, \"isSelected\": false },\n    { \"image\": \"bavarianSausages\", \"name\": \"Баварские колбаски\", \"price\": 110, \"isSelected\": false },\n    { \"image\": \"italianHerbs\", \"name\": \"Итальянские травы\", \"price\": 86, \"isSelected\": false },\n    { \"image\": \"shrimps\", \"name\": \"Креветки\", \"price\": 56, \"isSelected\": false },\n    { \"image\": \"bellPepper\", \"name\": \"Болгарский перец\", \"price\": 132, \"isSelected\": false },\n    { \"image\": \"jalapeno\", \"name\": \"Халапеньо\", \"price\": 85, \"isSelected\": false },\n    { \"image\": \"spicyBeef\", \"name\": \"Острая говядина\", \"price\": 69, \"isSelected\": false },\n    { \"image\": \"champignons\", \"name\": \"Шампиньоны\", \"price\": 50, \"isSelected\": false },\n    { \"image\": \"meatBalls\", \"name\": \"Митболы\", \"price\": 56, \"isSelected\": false },\n    { \"image\": \"spicyPepperoni\", \"name\": \"Острый пепперони\", \"price\": 119, \"isSelected\": false },\n    { \"image\": \"cheddarNparmesan\", \"name\": \"Чеддер и пармезан\", \"price\": 134, \"isSelected\": false },\n    { \"image\": \"mozzarella\", \"name\": \"Моцарелла\", \"price\": 71, \"isSelected\": false },\n    { \"image\": \"tenderChicken\", \"name\": \"Нежная курица\", \"price\": 143, \"isSelected\": false },\n    { \"image\": \"cheeseCubes\", \"name\": \"Кубики брынзы\", \"price\": 96, \"isSelected\": false },\n    { \"image\": \"pickles\", \"name\": \"Огурцы маринованные\", \"price\": 78, \"isSelected\": false },\n    { \"image\": \"tomato\", \"name\": \"Томаты\", \"price\": 67, \"isSelected\": false },\n    { \"image\": \"ham\", \"name\": \"Ветчина\", \"price\": 108, \"isSelected\": false },\n    { \"image\": \"pineapples\", \"name\": \"Ананасы\", \"price\": 94, \"isSelected\": false }\n  ]\n\n",
+          "latency": 1000,
+          "statusCode": 200,
+          "label": "",
+          "headers": [],
+          "bodyType": "INLINE",
+          "filePath": "",
+          "databucketID": "",
+          "sendFileAsBody": false,
+          "rules": [],
+          "rulesOperator": "OR",
+          "disableTemplating": false,
+          "fallbackTo404": false,
+          "default": true,
+          "crudKey": "id",
+          "callbacks": []
+        }
+      ],
+      "responseMode": null,
+      "streamingMode": null,
+      "streamingInterval": 0
     }
   ],
   "rootChildren": [
@@ -114,6 +176,14 @@
     {
       "type": "route",
       "uuid": "c2f65fad-0273-478f-bfd9-d20982afa8ed"
+    },
+    {
+      "type": "route",
+      "uuid": "7f1af658-7a05-4867-bd29-0fcf4d61f28c"
+    },
+    {
+      "type": "route",
+      "uuid": "b8376019-f1d8-43a4-9b8d-55b30042fda0"
     }
   ],
   "proxyMode": false,

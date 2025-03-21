@@ -13,8 +13,6 @@ final class OrderDetailsViewController: UIViewController {
     
     private let ingredientsService = IngredientsService.shared
     
-    //private let ingredientsCollectionView = IngredientsCollectionView()
-    
     private lazy var tabbleView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
@@ -28,11 +26,7 @@ final class OrderDetailsViewController: UIViewController {
         return tableView
     }()
     
-    private var ingredients: [Ingredient] = [] {
-        didSet {
-            //ingredientsCollectionView.update(ingredients)
-        }
-    }
+    private var ingredients: [Ingredient] = []
     
     private lazy var verticalStackView: UIStackView = {
         let stack = UIStackView()
@@ -50,7 +44,7 @@ final class OrderDetailsViewController: UIViewController {
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
-        
+    
     init(product: Product) {
         self.product = product
         super.init(nibName: nil, bundle: nil)
@@ -179,9 +173,21 @@ extension OrderDetailsViewController {
 //MARK: - Networking
 
 extension OrderDetailsViewController {
+    
     private func fetchIngredients() {
-        ingredients = ingredientsService.fetchIngredientss()
-        //ingredientsCollectionView.update(ingredients)
+        ingredientsService.fetchIngredientss { [weak self] result in
+            switch result {
+            case .success(let success):
+                self?.ingredients = success
+                
+                DispatchQueue.main.async {
+                    self?.tabbleView.reloadSections(IndexSet(integer: OrderDetailsSection.ingredients.rawValue), with: .automatic)
+                }
+                
+            case .failure(let failure):
+                print(failure.localizedDescription)
+            }
+        }
     }
 }
 

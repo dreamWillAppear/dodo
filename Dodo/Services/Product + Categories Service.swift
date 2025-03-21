@@ -6,8 +6,6 @@ final class ProductService {
     
     private init() {}
     
-
-    
     func fetchCategories(completion: @escaping (Result<[Category], NetworkError>) -> Void) {
         URLSession.shared.dataTask(with: API.Endpoint.categories.url) { data, response, error in
             guard let data,
@@ -46,8 +44,6 @@ final class ProductService {
                 completion(.failure(.noData))
                 return
             }
-            
-      
             
             let decoder = JSONDecoder()
             

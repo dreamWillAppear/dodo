@@ -1,4 +1,4 @@
-struct Ingredient {
+struct Ingredient: Decodable {
     let image: String
     let name: String
     let price: Int

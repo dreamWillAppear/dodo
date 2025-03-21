@@ -27,7 +27,7 @@ final class StoriesCollectionViewCell: UICollectionViewCell {
     }
     
     func update(story: Story) {
-        photoImageView.image = story.image
+        photoImageView.image = UIImage(named: story.image) 
     }
     
 }
